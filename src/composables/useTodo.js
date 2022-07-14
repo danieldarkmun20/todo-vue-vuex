@@ -14,6 +14,7 @@ const useTodos = () => {
       const text = e.target.value;
       if (text.trim() != '') {
         store.dispatch("add", e.target.value);
+        isError.value= false;
       } else {
         isError.value= true
       }
@@ -24,6 +25,7 @@ const useTodos = () => {
       const text = e.target.value.trim();
       if (text.trim() !== '') {
         store.dispatch("edit", {id, text});
+        isError.value= false;
       }else {
         isError.value= true
       }
