@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    todo: [
+    todos: [
       {
         id: "1",
         text: "PASAR EL TEST",
@@ -20,35 +20,61 @@ export default createStore({
       },
       {
         id: "4",
-        text: "Completar el todo pero en REAC.js",
+        text: "Completar el todo pero en REACT.js",
         completed: false,
       },
     ],
+    isError: false,
+    isEdit: false,
   },
   mutations: {
-    // toggleTodo(state, id){
-    //   const todoIdx = state.todo.findIndex(todo => todo.id === id);
-    //   state.todo[todoIdx].completed = !state.todo[todoIdx].completed;
-    // }
+    checkTodo(state, id) {
+      const todoIdx = state.todos.findIndex((todo) => todo.id === id);
+      state.todos[todoIdx].completed = true;
+    },
+    unCheckTodo(state, id) {
+      const todoIdx = state.todos.findIndex((todo) => todo.id === id);
+      state.todos[todoIdx].completed = false;
+    },
+    add(state, todo) {
+      state.todos.push(todo);
+    },
+    remove(state, id) {
+      state.todos = state.todos.filter((td) => td.id != id);
+    },
+    edit(state, { id, text}) {
+      const todoIdx = state.todos.findIndex((todo) => todo.id === id);
+      state.todos[todoIdx].text = text;
+    },
   },
-  actions: {},
+  actions: {
+    add({ commit }, text) {
+      commit("add", {
+        text,
+        completed: false,
+      });
+    },
+    edit({ commit }, { id, text }) {
+      console.log(id)
+      commit("edit", { id, text });
+    },
+  },
   getters: {
-    // pendingTodos(state, getters) {
-    //   return state.todo.filter((td) => !td.completed);
-    // },
-    // allTodos(state, getters) {
-    //   return state.todo;
-    // },
-    // completedTodos(state, getters) {
-    //   return state.todo.filter((td) => td.completed);
-    // },
-    // getTodosByTab: (_, getters) => (tab) =>{ 
-    //   switch (tab) {
-    //     case 'all': return getters.allTodos;
-    //     case 'completed': return getters.completedTodos
-    //     case 'pending': return getters.pendingTodos
-    //   }
-    // },
+    getPendingToDos(state) {
+      return state.todos.filter((td) => !td.completed);
+    },
+    getAllToDos(state) {
+      return state.todos;
+    },
+    getCompletedTodos(state) {
+      return state.todos.filter((td) => td.completed);
+    },
+    getIsError(state) {
+      return state.isError;
+    },
+    getIsEdit(state) {
+      return state.isEdit;
+    },
   },
   modules: {},
 });
