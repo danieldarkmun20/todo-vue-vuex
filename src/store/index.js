@@ -24,8 +24,6 @@ export default createStore({
         completed: false,
       },
     ],
-    isError: false,
-    isEdit: false,
   },
   mutations: {
     checkTodo(state, id) {
@@ -55,7 +53,6 @@ export default createStore({
       });
     },
     edit({ commit }, { id, text }) {
-      console.log(id)
       commit("edit", { id, text });
     },
   },
@@ -71,9 +68,6 @@ export default createStore({
     },
     getIsError(state) {
       return state.isError;
-    },
-    getIsEdit(state) {
-      return state.isEdit;
     },
   },
   modules: {},
