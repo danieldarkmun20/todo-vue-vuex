@@ -14,11 +14,10 @@
             class="text-xl text-orange-800 placeholder-orange-400 py-2 px-5 bg-orange-100 rounded-full outline-orange-300"
           />
         </div>
-        <div v-if="isError" class="grid-cols-12">
-          <p class="text-lg bg-red-700 rounded py-2 px-4 text-white">
-            Error! Por favor ingrese un todo valido
-          </p>
-        </div>
+        <ErrorMsj
+          v-if="isError"
+          msj="Error! Por favor ingrese un todo valido"
+        />
       </div>
     </div>
     <div class="bg-gray-100 mt-5 p-5 rounded-xl shadow-lg text-gray-700">
@@ -51,15 +50,7 @@
             >
               <td>No hay cosas por hacer. Ingrese uno.</td>
             </tr>
-            <tr
-              v-for="(todo, index) in all"
-              :key="index"
-              :class="`${
-                !todo.completed
-                  ? 'odd:bg-orange-100 even:bg-orange-50 transition duration-300'
-                  : 'bg-green-100 line-through'
-              } `"
-            >
+            <tr v-for="(todo, index) in all" :key="index" :class="getCompletedClass(todo.completed)">
               <td class="text-center px-1 py-2 text-orange-800">
                 {{ index + 1 }}
               </td>
@@ -131,8 +122,13 @@
 </template>
 
 <script>
+import ErrorMsj from "../components/ErrorMsj.vue";
 import useTodo from "../composables/useTodo";
+
 export default {
+  components: {
+    ErrorMsj,
+  },
   setup(props) {
     const {
       pending,
@@ -155,6 +151,11 @@ export default {
       unCheckTodo,
       edit,
       isError,
+      getCompletedClass: (completed) => {
+        return !completed
+          ? "odd:bg-orange-100 even:bg-orange-50 transition duration-300"
+          : "bg-green-100 line-through";
+      },
     };
   },
 };
